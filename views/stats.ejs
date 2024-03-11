@@ -1,0 +1,99 @@
+<%- include('partials/top-partials.ejs') %>
+<style>
+    .top{
+        width: 100%;
+        height: 20vw;
+        background-color: #080A06;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 5vw;
+        color: #fff;
+    }
+
+    .ranking{
+        width: 40%;
+        height: 100%;
+        display: flex;
+    }
+    .first-rank:nth-child(1){
+        width: 40%;
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        
+        position: relative;
+        top: 20%;
+    }
+    .first-rank:nth-child(2){
+        width: 60%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        
+    }
+    .first-rank>img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .rk{
+        display: flex;
+        flex-direction: column;
+        margin-top: 5vw;
+    }
+
+</style>
+<div class="blog-fullPage" style="display: flex; flex-direction: column;">
+    <div class="top">
+        <h2 style="margin-left: 5vw;">Most Runs In T20 International</h2>
+        <div class="ranking">
+            <div class="first-rank">
+               <div class="rk">
+                <span style="font-size: 1.8vw; opacity: 80%;">PHIL SALT</span>
+                <span style="font-size: 1.8vw;">802</span>
+               </div>
+                <!-- <img src="" alt=""> -->
+            </div>
+            <div class="first-rank">
+               <div class="rk">
+                <span style="font-size: 2vw; opacity: 80%;">SURYA KUMAR YADAV</span>
+                <span style="font-size: 2vw;">861</span>
+               </div>
+                <!-- <img src="" alt=""> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">NO.</th>
+                <th scope="col">Player</th>
+                <th scope="col">Team</th>
+                <th scope="col">Runs</th>
+                <th scope="col">Career best</th>
+                <th scope="col">Rank date</th>
+               
+              </tr>
+            </thead>
+            <tbody>
+                <% batRanking.splice(0, 25).forEach((rank) => { %>
+                    <tr>
+                        <th scope="row"><%= rank.no %></th>
+                        <td><a target="_blank" style="color: #000 !important; font-weight: bold;" href="<%=rank['Player_url']%>"><%= rank['Player-name'] %></a></td>
+                        <td><%= rank['Country_name'] %></td>
+                        <td style="font-weight: bold;"><%= rank['Points'] %></td>
+                        <td><%= rank['careerbest'] %></td>
+                        <td><%= rank.rankdate %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+          </table>
+    </div>
+</div>
+
+<%- include('partials/footer.ejs') %>

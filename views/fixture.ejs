@@ -1,0 +1,67 @@
+<%- include('partials/top-partials.ejs') %>
+<style>
+    .logo>img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+</style>
+<div class="blog-fullPage" style="padding: 25px; display: flex; flex-direction: column; padding-top:80px; gap: 25px;">
+    <% fixtureData.forEach((fix) => {
+        // Convert UNIX timestamp to milliseconds and then to a Date object
+        const dateTime = new Date(fix.time * 1000);
+        
+        // Format the date and time
+        const formattedDateTime = `${dateTime.getHours().toString().padStart(2, '0')}:${dateTime.getMinutes().toString().padStart(2, '0')}, ${dateTime.getDate()} ${dateTime.toLocaleString('default', { month: 'short' })} ${dateTime.getFullYear().toString().slice(2)}`;
+    
+        // Map team names to image links
+        const teamImageLinks = {
+            "KKR": "https://upload.wikimedia.org/wikipedia/en/thumb/4/4c/Kolkata_Knight_Riders_Logo.svg/1200px-Kolkata_Knight_Riders_Logo.svg.png",
+            "PBKS": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d4/Punjab_Kings_Logo.svg/1200px-Punjab_Kings_Logo.svg.png",
+            "LSG": "https://upload.wikimedia.org/wikipedia/en/a/a9/Lucknow_Super_Giants_IPL_Logo.svg",
+            "GT": "https://upload.wikimedia.org/wikipedia/en/thumb/0/09/Gujarat_Titans_Logo.svg/1200px-Gujarat_Titans_Logo.svg.png",
+            "MI": "https://upload.wikimedia.org/wikipedia/en/thumb/c/cd/Mumbai_Indians_Logo.svg/1200px-Mumbai_Indians_Logo.svg.png",
+            "RR": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5c/This_is_the_logo_for_Rajasthan_Royals%2C_a_cricket_team_playing_in_the_Indian_Premier_League_%28IPL%29.svg/800px-This_is_the_logo_for_Rajasthan_Royals%2C_a_cricket_team_playing_in_the_Indian_Premier_League_%28IPL%29.svg.png",
+            "DC": "https://upload.wikimedia.org/wikipedia/en/thumb/2/2f/Delhi_Capitals.svg/1200px-Delhi_Capitals.svg.png",
+            "RCB": "https://upload.wikimedia.org/wikipedia/en/thumb/2/2a/Royal_Challengers_Bangalore_2020.svg/640px-Royal_Challengers_Bangalore_2020.svg.png",
+            "CSK": "https://upload.wikimedia.org/wikipedia/en/thumb/2/2b/Chennai_Super_Kings_Logo.svg/800px-Chennai_Super_Kings_Logo.svg.png",
+            // Add mappings for other teams as needed
+        };
+    
+        const team1ImageLink = teamImageLinks[fix.teams.t1.sName] || "https://www.jagranimages.com/images/newimg/21082020/21_08_2020-ipl_logo_20650553.jpg"; // Default link if team name not found
+        const team2ImageLink = teamImageLinks[fix.teams.t2.sName] || "https://www.jagranimages.com/images/newimg/21082020/21_08_2020-ipl_logo_20650553.jpg"; // Default link if team name not found
+        
+    %>
+        <div class="fixture">
+            <div class="first" style=" width: 30%;">
+                <div class="logo" style="width: 5vw; height: 5vw;"><img src="<%= team1ImageLink %>" alt=""></div>
+                <div class="match-info" style="text-align: left; display: flex; flex-direction: column; align-items: left;">
+                    <span class="teamName" style="font-size: 1.5vw;"><%= fix.teams.t1.name %></span>
+                    <div class="other">
+                        <span class="score" id="innings"></span>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="status" style="text-align: center; width: 40%;">
+                <div class="match-status" style="font-size: 2vw; font-weight: 600; color: goldenrod"><%= fix.matchStatus %></div>
+                <div class="match-time" style="font-size: 1.4vw; color: maroon; font-weight: 600; text-transform: uppercase;"><%= formattedDateTime %></div>
+                <div class="match-type" style="font-size: 1.4vw; color: grey; text-transform: uppercase;"><%= fix.srs %></div>
+            </div>
+    
+            <div class="first" style=" width: 30%; display: flex; flex-direction: row; justify-content: right;">
+                <div class="match-info" style="text-align: right;">
+                    <span class="teamName" style="font-size: 1.5vw;"><%= fix.teams.t2.name %></span>
+                    <div class="other">
+                        <span class="score" id="innings"></span>
+                    </div>
+                </div>
+                <div class="logo" style="width: 5vw; height: 5vw;"><img src="<%= team2ImageLink %>" alt=""></div>
+            </div>
+        </div>
+    <% }) %>
+</div>
+
+
+
+<%- include('partials/footer.ejs') %>
