@@ -48,26 +48,25 @@
 </style>
 <div class="blog-fullPage" style="display: flex; flex-direction: column;">
     <div class="top">
-        <h2 style="margin-left: 5vw;">Most Runs In T20 International</h2>
+        <div class="box" style=" display: flex; flex-direction: column; justify-content: center; align-items: center;">
+         <h2 id="statsHeading" style="margin-left: 5vw;">Most Runs In T20 International</h2>
+        <span style="display: flex; width: 100%; justify-content: space-evenly; align-items: center; list-style: none;">
+            <li id="t20">T20</li>
+            <li id="odi">ODI</li>
+            <li id="test">TEST</li>
+        </span>
+        </div>
         <div class="ranking">
             <div class="first-rank">
-               <div class="rk">
-                <span style="font-size: 1.8vw; opacity: 80%;">PHIL SALT</span>
-                <span style="font-size: 1.8vw;">802</span>
-               </div>
-                <!-- <img src="" alt=""> -->
+                <img style="object-fit: contain !important;" src="/images/pngwing.com.png" alt="">
             </div>
             <div class="first-rank">
-               <div class="rk">
-                <span style="font-size: 2vw; opacity: 80%;">SURYA KUMAR YADAV</span>
-                <span style="font-size: 2vw;">861</span>
-               </div>
-                <!-- <img src="" alt=""> -->
+                <img style="object-fit: contain !important;" src="/images/—Pngtree—icc cricket world cup motion_6544120.png" alt="">
             </div>
         </div>
     </div>
 
-    <div class="bottom">
+    <div class="bottom" id="t20Stats" style="display: initial;">
         <table class="table">
             <thead>
               <tr>
@@ -94,6 +93,140 @@
             </tbody>
           </table>
     </div>
+
+    <div class="bottom" id="odiStats" style="display: none;">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">NO.</th>
+                <th scope="col">Player</th>
+                <th scope="col">Team</th>
+                <th scope="col">Runs</th>
+                <th scope="col">Career best</th>
+                <th scope="col">Rank date</th>
+               
+              </tr>
+            </thead>
+            <tbody>
+                <% odiRanking.splice(0, 25).forEach((rank) => { %>
+                    <tr>
+                        <th scope="row"><%= rank.no %></th>
+                        <td><a target="_blank" style="color: #000 !important; font-weight: bold;" href="<%=rank['Player_url']%>"><%= rank['Player-name'] %></a></td>
+                        <td><%= rank['Country_name'] %></td>
+                        <td style="font-weight: bold;"><%= rank['Points'] %></td>
+                        <td><%= rank['careerbest'] %></td>
+                        <td><%= rank.rankdate %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+          </table></div>
+
+    <div class="bottom" id="testStats" style="display: none;">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">NO.</th>
+                    <th scope="col">Player</th>
+                    <th scope="col">Team</th>
+                    <th scope="col">Runs</th>
+                    <th scope="col">Career best</th>
+                    <th scope="col">Rank date</th>
+                   
+                  </tr>
+                </thead>
+                <tbody>
+                    <% testRanking.splice(0, 25).forEach((rank) => { %>
+                        <tr>
+                            <th scope="row"><%= rank.no %></th>
+                            <td><a target="_blank" style="color: #000 !important; font-weight: bold;" href="<%=rank['Player_url']%>"><%= rank['Player-name'] %></a></td>
+                            <td><%= rank['Country_name'] %></td>
+                            <td style="font-weight: bold;"><%= rank['Points'] %></td>
+                            <td><%= rank['careerbest'] %></td>
+                            <td><%= rank.rankdate %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+          </table></div>
 </div>
+
+
+<script>
+    var t20Btn = document.querySelector("#t20");
+    var odiBtn = document.querySelector("#odi");
+    var testBtn = document.querySelector("#test");
+
+    var t20Display = document.querySelector("#t20Stats");
+    var odiDisplay = document.querySelector("#odiStats");
+    var testDisplay = document.querySelector("#testStats");
+
+    var heading = document.querySelector("#statsHeading");
+
+    //odi button
+    odiBtn.addEventListener("click", function(){
+    // Set styles for odiBtn
+    odiBtn.style.borderBottom = "2px solid #fff";
+    
+    // Set styles for t20Btn
+    t20Btn.style.borderBottom = "none";
+    t20Btn.style.fontWeight = "400";
+    t20Btn.style.fontSize = "1.5vw";
+
+    // The following lines are setting properties again for odiBtn
+    testBtn.style.borderBottom = "none";
+    testBtn.style.fontWeight = "400";
+    testBtn.style.fontSize = "1.5vw";
+
+    t20Display.style.display = "none";
+    testDisplay.style.display = "none";
+    odiDisplay.style.display = "initial";
+
+    heading.innerHTML = "Most Runs In ODI International";
+})
+
+//test button
+    testBtn.addEventListener("click", function(){
+    // Set styles for odiBtn
+    testBtn.style.borderBottom = "2px solid #fff";
+    
+    // Set styles for t20Btn
+    t20Btn.style.borderBottom = "none";
+    t20Btn.style.fontWeight = "400";
+    t20Btn.style.fontSize = "1.5vw";
+
+    // The following lines are setting properties again for odiBtn
+    odiBtn.style.borderBottom = "none";
+    odiBtn.style.fontWeight = "400";
+    odiBtn.style.fontSize = "1.5vw";
+
+    t20Display.style.display = "none";
+    testDisplay.style.display = "initial";
+    odiDisplay.style.display = "none";
+
+    heading.innerHTML = "Most Runs In TEST International";
+})
+
+//test button
+t20Btn.addEventListener("click", function(){
+    // Set styles for odiBtn
+    t20Btn.style.borderBottom = "2px solid #fff";
+    
+    // Set styles for t20Btn
+    testBtn.style.borderBottom = "none";
+    testBtn.style.fontWeight = "400";
+    testBtn.style.fontSize = "1.5vw";
+
+    // The following lines are setting properties again for odiBtn
+    odiBtn.style.borderBottom = "none";
+    odiBtn.style.fontWeight = "400";
+    odiBtn.style.fontSize = "1.5vw";
+
+    t20Display.style.display = "initial";
+    testDisplay.style.display = "none;";
+    odiDisplay.style.display = "none";
+    heading.innerHTML = "Most Runs In T20 International";
+})
+
+
+</script>
 
 <%- include('partials/footer.ejs') %>

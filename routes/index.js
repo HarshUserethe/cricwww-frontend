@@ -166,12 +166,28 @@ router.get('/fixture', async (req, res) => {
       match_formate: 'T20'
     }
   };
+  const options2 = {
+    method: 'POST',
+    url: 'https://free-cricket-live-score1.p.rapidapi.com/schedule/upcoming',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': '30e2096546msh25496d9f35b184fp15ed6cjsnc60b405c5d89',
+      'X-RapidAPI-Host': 'free-cricket-live-score1.p.rapidapi.com'
+    },
+    data: {
+      page_number: 1,
+      match_formate: 'T20'
+    }
+  };
   
   try {
     const response = await axios.request(options);
+    const resp = await axios.request(options2);
+    const womenpl = resp.data.res.matches;
     const fixtureData = response.data.res.matches
     const filteredFixtureData = fixtureData.filter(item => item.srsKey === "ipl_2024");
-    res.render('fixture', {fixtureData: filteredFixtureData})
+    const wpl = womenpl.filter(item => item.srsKey === "wpl_2024");
+    res.render('fixture', {fixtureData: filteredFixtureData, wpl})
   } catch (error) {
     console.error(error);
   }
@@ -192,12 +208,43 @@ router.get('/ranking', async (req, res) => {
       rank_type: 'bat'
     }
   };
+
+  const odi = {
+    method: 'POST',
+    url: 'https://free-cricket-live-score1.p.rapidapi.com/ranking/men',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': '30e2096546msh25496d9f35b184fp15ed6cjsnc60b405c5d89',
+      'X-RapidAPI-Host': 'free-cricket-live-score1.p.rapidapi.com'
+    },
+    data: {
+      match_formate: 'odi',
+      rank_type: 'bat'
+    }
+  };
+  const test = {
+    method: 'POST',
+    url: 'https://free-cricket-live-score1.p.rapidapi.com/ranking/men',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': '30e2096546msh25496d9f35b184fp15ed6cjsnc60b405c5d89',
+      'X-RapidAPI-Host': 'free-cricket-live-score1.p.rapidapi.com'
+    },
+    data: {
+      match_formate: 'test',
+      rank_type: 'bat'
+    }
+  };
   
   try {
     const response = await axios.request(options);
+    const odiResponse = await axios.request(odi);
+    const testResponse = await axios.request(test);
     const batRanking = response.data.data['bat-rank'].rank;
+    const odiRanking = odiResponse.data.data['bat-rank'].rank;
+    const testRanking = testResponse.data.data['bat-rank'].rank;
     // res.json(batRanking)
-    res.render('stats', {batRanking})
+    res.render('stats', {batRanking, odiRanking, testRanking})
   } catch (error) {
     console.error(error);
   }

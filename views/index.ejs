@@ -29,7 +29,7 @@
 
       <nav class="navbar bg-dark border-bottom border-body fixed-top" data-bs-theme="dark">
         <div class="nav-logo">
-          <div class="logo"><img src="" alt="logo"></div>
+          <div class="logo"><img style="object-fit: contain !important;" src="/images/LOGO.png" alt="logo"></div>
           <span>CricWWW</span>
         </div>
 
@@ -37,9 +37,9 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" id="ss" href="#">Series</a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a class="nav-link" href="/fixture">Fixtures</a>
           </li>
@@ -84,7 +84,15 @@
                                         <%= formattedDate %>
                                     </div>
                                     <span class="seprator">|</span>
-                                    <div class="title"><%= match.teamInfo[0].shortname %> vs <%= match.teamInfo[1].shortname %></div>
+                                    <div class="title">
+                                      <div class="title">
+                                        <% if (match.teamInfo[0] && match.teamInfo[1]) { %>
+                                            <%= match.teamInfo[0].shortname %> vs <%= match.teamInfo[1].shortname %>
+                                        <% } else { %>
+                                            Unknown vs Unknown
+                                        <% } %>
+                                    </div>
+                                    </div>
                                 </div>
                                 <div class="icon"><i class="ri-arrow-drop-right-line"></i></div>
                             </div>
@@ -92,24 +100,56 @@
                             <div class="card-body">
                                 <p class="card-title"><%= match.venue %></p>
                                 <div class="teams">
-                                    <div class="first">
-                                        <div class="profile"><img src="<%= match.teamInfo[0].img %>" alt=""></div>
-                                        <div class="name">
-                                            <span class="teamName"><%= match.teamInfo[0].shortname %></span>
-                                            <span class="score" id="innings"><%=match.score[0].r %>/<%=match.score[0].w %></span>
-                                            <span class="over"><%=match.score[0].o %></span>
-                                        </div>
+
+                                  <!-- first team -->
+                                  <div class="first">
+                                    <div class="profile">
+                                        <% if (match.teamInfo[0]) { %>
+                                            <img src="<%= match.teamInfo[0].img %>" alt="">
+                                        <% } else { %>
+                                            <!-- Provide a default image or alternative content -->
+                                            <img src="https://img.freepik.com/premium-vector/cricket-player-logo-playing-short-concept_898026-1122.jpg?size=338&ext=jpg&ga=GA1.1.1395880969.1710115200&semt=ais" alt="">
+                                        <% } %>
                                     </div>
-                                    <div class="first">
-                                        <div class="profile"><img src="<%= match.teamInfo[1].img %>" alt=""></div>
-                                        <div class="name">
-                                            <div class="name">
-                                                <span class="teamName"><%= match.teamInfo[1].shortname %></span>
-                                                <span class="score" id="secondInn">457/8*</span>
-                                                <span class="over">45.4</span>
-                                            </div>
-                                        </div>
+                                    <div class="name">
+                                        <% if (match.teamInfo[0]) { %>
+                                            <span class="teamName"><%=match.teamInfo[0].shortname%></span>
+                                            <span class="score" id="secondInn"><%=match.score[0].r%>/<%=match.score[0].w%></span>
+                                            <span class="over"><%=match.score[0].o%></span>
+                                        <% } else { %>
+                                            <!-- Provide alternative content or handle the absence of team info -->
+                                            <span>No team info available</span>
+                                        <% } %>
                                     </div>
+                                  </div>
+
+                                    <!-- second team -->
+                               
+<div class="first">
+  <div class="profile">
+      <% if (match.teamInfo[1]) { %>
+          <img src="<%= match.teamInfo[1].img %>" alt="">
+      <% } else { %>
+          <!-- Provide a default image or alternative content -->
+          <img src="https://img.freepik.com/premium-vector/cricket-player-logo-playing-short-concept_898026-1122.jpg?size=338&ext=jpg&ga=GA1.1.1395880969.1710115200&semt=ais" alt="">
+      <% } %>
+  </div>
+  <div class="name">
+      <% if (match.teamInfo[1]) { %>
+          <span class="teamName"><%=match.teamInfo[1].shortname%></span>
+          <% if (match.score[1]) {%>
+            <span class="score" id="secondInn"><%=match.score[1].r%>/<%=match.score[1].w%></span>
+            <span class="over"><%=match.score[1].o%></span>
+            <% } else{ %>
+              <span class="score" style="opacity: 50%;" id="secondInn">Pending...</span>
+             <span class="over"></span>
+              <% } %>
+      <% } else { %>
+          <!-- Provide alternative content or handle the absence of team info -->
+          <span>No team info available</span>
+      <% } %>
+  </div>
+</div>
                                 </div>
                                 <div class="status" style="font-weight: bold; color: maroon;"><%= match.status %></div>
                             </div>
