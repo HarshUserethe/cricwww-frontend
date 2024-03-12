@@ -35,7 +35,7 @@ router.get('/', async function(req, res, next) {
     // res.render('index', { blogData });
   } catch (error) {
     console.error(error); // Handle errors gracefully (e.g., send an error page)
-    res.status(500).send('Internal Server Error'); // Or a more informative message
+    res.status(500).send('Error: API daily limit exceeded. Please try again later.'); // Or a more informative message
   }
 });
 
