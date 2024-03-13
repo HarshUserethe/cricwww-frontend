@@ -1,0 +1,136 @@
+<title>CricWWW - Stats Corner</title>
+<%- include('partials/top-partials.ejs') %>
+
+<style>
+.blog-fullPage{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6vw;
+    gap: 25px;
+}
+.match-logo{
+    width:  4vw;
+    height: 4vw;
+    border-radius: 50%;
+    background-color: #fff;
+    padding: 2px;
+}
+.match-logo>img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+</style>
+<div class="blog-fullPage">
+    <div class="wpl-standings">
+       <div class="title-space" style=" border-radius: 10px; display: flex; justify-content: center; align-items: center; gap: 20px;">
+        <div class="match-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/2/27/Women%27s_Premier_League.svg/800px-Women%27s_Premier_League.svg.png" alt="">
+        </div>
+        <h2>Women's Premier League Standings 2024</h2>
+    </div>
+       <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">NO.</th>
+            <th scope="col">Teams</th>
+            <th scope="col">Match</th>
+            <th scope="col">Win</th>
+            <th scope="col">Lose</th>
+            <th scope="col">Tie</th>
+            <th scope="col">Points</th>
+            <th scope="col">Last Five</th>
+          </tr>
+        </thead>
+        <tbody>
+         
+            <% wplPoints.forEach((team, index) => { %>
+                <tr>
+                    <th scope="row"><%= index+1 %></th>
+                    <td style="font-weight: bold;"><%= team.sName %></td>
+                    <td><%= team.matches %></td>
+                    <td><%= team.won %></td>
+                    <td><%= team.lost %></td>
+                    <td><%= team.tie %></td>
+                    <td><%= team.pts %></td>
+            
+                        <td>
+                          
+                                <% team.lastFive.forEach(status => { %>
+                                    <% if (status === 'lost') { %>
+                                        <i style="color: red;" class="ri-close-circle-fill"></i>
+                                    <% } else { %>
+                                        <i style="color: green;" class="ri-checkbox-circle-fill"></i>
+                                    <% } %>
+                                <% }) %>
+                            
+                        </td>
+                
+                   
+                    
+                  </tr>
+            <% }) %>
+          
+     
+        </tbody>
+      </table>
+    </div>
+    <div class="wpl-standings">
+        <div class="title-space" style=" border-radius: 10px; display: flex; justify-content: center; align-items: center; gap: 20px;">
+            <div class="match-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/84/Indian_Premier_League_Official_Logo.svg/1200px-Indian_Premier_League_Official_Logo.svg.png" alt="">
+            </div>
+            <h2>Indian Premier League Standings 2024</h2>
+        </div>
+       <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">NO.</th>
+            <th scope="col">Teams</th>
+            <th scope="col">Match</th>
+            <th scope="col">Win</th>
+            <th scope="col">Lose</th>
+            <th scope="col">Tie</th>
+            <th scope="col">Points</th>
+            <th scope="col">Last Five</th>
+          </tr>
+        </thead>
+        <tbody>
+         
+            <tr>
+                <p style="color: maroon; font-weight: bold;">The Indian Premier League (IPL) 2024 season is scheduled to commence on March 22, 2024.<p>
+            </tr>
+            <!-- <% wplPoints.forEach((team, index) => { %>
+                <tr>
+                    <th scope="row"><%= index+1 %></th>
+                    <td><%= team.sName %></td>
+                    <td><%= team.matches %></td>
+                    <td><%= team.won %></td>
+                    <td><%= team.lost %></td>
+                    <td><%= team.tie %></td>
+                    <td><%= team.pts %></td>
+            
+                        <td>
+                          
+                                <% team.lastFive.forEach(status => { %>
+                                    <% if (status === 'lost') { %>
+                                        <i style="color: red;" class="ri-close-circle-fill"></i>
+                                    <% } else { %>
+                                        <i style="color: green;" class="ri-checkbox-circle-fill"></i>
+                                    <% } %>
+                                <% }) %>
+                            
+                        </td>
+                  </tr>
+            <% }) %> -->
+          
+     
+        </tbody>
+      </table>
+    </div>
+</div>
+
+<%- include('partials/footer.ejs') %>

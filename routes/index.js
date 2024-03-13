@@ -30,12 +30,11 @@ router.get('/', async function(req, res, next) {
     const response = await axios('https://cricwww-cms.onrender.com/api/posts?populate=*');
     const blogData = response.data;
     const postData = blogData.data;
-
     res.render('index', {postData, startIndex, endIndex, recentMatch})
     // res.render('index', { blogData });
   } catch (error) {
-    console.error(error); // Handle errors gracefully (e.g., send an error page)
     res.status(500).send('Error: API daily limit exceeded. Please try again later.'); // Or a more informative message
+    console.error(error); // Handle errors gracefully (e.g., send an error page)
   }
 });
 
@@ -179,15 +178,54 @@ router.get('/fixture', async (req, res) => {
       match_formate: 'T20'
     }
   };
-  
+  const options3 = {
+    method: 'POST',
+    url: 'https://free-cricket-live-score1.p.rapidapi.com/schedule/upcoming',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': '30e2096546msh25496d9f35b184fp15ed6cjsnc60b405c5d89',
+      'X-RapidAPI-Host': 'free-cricket-live-score1.p.rapidapi.com'
+    },
+    data: {
+      page_number: 3,
+      match_formate: 'T20'
+    }
+  };
+
+  const recentMatch = {
+    method: 'POST',
+    url: 'https://free-cricket-live-score1.p.rapidapi.com/schedule/recent',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': '30e2096546msh25496d9f35b184fp15ed6cjsnc60b405c5d89',
+      'X-RapidAPI-Host': 'free-cricket-live-score1.p.rapidapi.com'
+    },
+    data: {
+      page_number: 1,
+      match_formate: ''
+    }
+  };
+
   try {
     const response = await axios.request(options);
     const resp = await axios.request(options2);
+    const wcup = await axios.request(options3);
+    const recent = await axios.request(recentMatch);
+
+    
     const womenpl = resp.data.res.matches;
     const fixtureData = response.data.res.matches
+    const mensWcup = wcup.data.res.matches;
+    const recentRecord = recent.data.res.matches;
+
+
     const filteredFixtureData = fixtureData.filter(item => item.srsKey === "ipl_2024");
     const wpl = womenpl.filter(item => item.srsKey === "wpl_2024");
-    res.render('fixture', {fixtureData: filteredFixtureData, wpl})
+    const worldCupMatches = mensWcup.filter(item => item.srsKey === "mens_t20_wc_2024");
+    const recentMatches = recentRecord.filter(item => item.srsKey === "mens_t20_wc_2024" || item.srsKey ==="wpl_2024");
+
+    
+    res.render('fixture', {fixtureData: filteredFixtureData, wpl, worldCupMatches, recentMatches})
   } catch (error) {
     console.error(error);
   }
@@ -235,19 +273,91 @@ router.get('/ranking', async (req, res) => {
       rank_type: 'bat'
     }
   };
+
+  const t20team = {
+    method: 'POST',
+    url: 'https://free-cricket-live-score1.p.rapidapi.com/ranking/men',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': '30e2096546msh25496d9f35b184fp15ed6cjsnc60b405c5d89',
+      'X-RapidAPI-Host': 'free-cricket-live-score1.p.rapidapi.com'
+    },
+    data: {
+      match_formate: 't20',
+      rank_type: 'team'
+    }
+  };
+  const oditeam = {
+    method: 'POST',
+    url: 'https://free-cricket-live-score1.p.rapidapi.com/ranking/men',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': '30e2096546msh25496d9f35b184fp15ed6cjsnc60b405c5d89',
+      'X-RapidAPI-Host': 'free-cricket-live-score1.p.rapidapi.com'
+    },
+    data: {
+      match_formate: 'odi',
+      rank_type: 'team'
+    }
+  };
+  const testteam = {
+    method: 'POST',
+    url: 'https://free-cricket-live-score1.p.rapidapi.com/ranking/men',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': '30e2096546msh25496d9f35b184fp15ed6cjsnc60b405c5d89',
+      'X-RapidAPI-Host': 'free-cricket-live-score1.p.rapidapi.com'
+    },
+    data: {
+      match_formate: 'test',
+      rank_type: 'team'
+    }
+  };
   
   try {
     const response = await axios.request(options);
     const odiResponse = await axios.request(odi);
     const testResponse = await axios.request(test);
+    const t20teamResponse = await axios.request(t20team);
+    const oditeamResponse = await axios.request(oditeam);
+    const testteamResponse = await axios.request(testteam);
+
     const batRanking = response.data.data['bat-rank'].rank;
     const odiRanking = odiResponse.data.data['bat-rank'].rank;
     const testRanking = testResponse.data.data['bat-rank'].rank;
+    const t20teamRanking = t20teamResponse.data.data['bat-rank'].rank; 
+    const oditeamRanking = oditeamResponse.data.data['bat-rank'].rank; 
+    const testteamRanking = testteamResponse.data.data['bat-rank'].rank; 
     // res.json(batRanking)
-    res.render('stats', {batRanking, odiRanking, testRanking})
+    res.render('stats', {batRanking, odiRanking, testRanking, t20teamRanking, oditeamRanking, testteamRanking})
   } catch (error) {
     console.error(error);
   }
 })
 
+router.get('/stats-corner', async (req, res) => {
+  const options = {
+    method: 'POST',
+    url: 'https://free-cricket-live-score1.p.rapidapi.com/series/pointstable',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': '30e2096546msh25496d9f35b184fp15ed6cjsnc60b405c5d89',
+      'X-RapidAPI-Host': 'free-cricket-live-score1.p.rapidapi.com'
+    },
+    data: {key: 'wpl_2024'}
+  };
+  
+  try {
+    const response = await axios.request(options);
+    console.log(response.data);
+    const wplPoints = response.data.res.series.points[0].teams;
+    res.render('statscorner', {wplPoints})
+  } catch (error) {
+    console.error(error);
+  }
+ 
+})
+
 module.exports = router;
+
+
